@@ -1,0 +1,48 @@
+version: '3'
+
+vars:
+  VERSION: v1.0.0
+  COMMIT:
+    sh: git rev-parse --short HEAD
+
+tasks:
+  default:
+    cmds:
+      - task: windows
+      - task: mac
+      - task: build-firmware
+      - task: copy
+      - task: pack
+  windows:
+    cmds:
+      - mkdir -p twESP32FloraCLI/build
+      - mkdir -p dist
+      - cd twESP32FloraCLI;GOOS=windows GOARCH=amd64 go build -o build/twESP32FloraCLI.exe -ldflags "-s -w -X main.version={{.VERSION}} -X main.commit={{.COMMIT}}" main.go
+  mac:
+    cmds:
+      - mkdir -p twESP32FloraCLI/build
+      - cd twESP32FloraCLI;CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o build/twESP32FloraCLI.darwin.amd64 -ldflags "-s -w -X main.version={{.VERSION}} -X main.commit={{.COMMIT}}" main.go
+      - cd twESP32FloraCLI;CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -o build/twESP32FloraCLI.darwin.arm64 -ldflags "-s -w -X main.version={{.VERSION}} -X main.commit={{.COMMIT}}" main.go
+  build-firmware:
+    desc: "Build the firmware using arduino-cli for XIAO ESP32C3"
+    cmds:
+      - mkdir -p twESP32FloraCLI/build
+      - arduino-cli compile --fqbn esp32:esp32:XIAO_ESP32C3 --output-dir twESP32FloraCLI/build ./twESP32Flora
+  copy:
+    cmds:
+      - mkdir -p twESP32FloraCLI/build
+      - rm -f twESP32FloraCLI/build/README.md
+      - rm -f twESP32FloraCLI/build/README_ja.md
+      - rm -f twESP32FloraCLI/build/LICENSE
+      - cp README.md  twESP32FloraCLI/build/
+      - cp README_ja.md  twESP32FloraCLI/build/
+      - cp LICENSE   twESP32FloraCLI/build/
+      - cp -a  twESP32FloraCLI/esptool/*  twESP32FloraCLI/build/
+  pack:
+    cmds:
+      - mkdir -p dist
+      - zip -j dist/twESP32Flora.zip twESP32FloraCLI/build/*
+  clean:
+    cmds:
+      - rm -rf twESP32FloraCLI/build
+      - rm -rf dist

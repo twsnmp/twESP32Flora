@@ -28,5 +28,8 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
-# .vscode/
+.vscode/
+# Build
+dist/
+twESP32FloraCLI/build/
+.DS_Store
