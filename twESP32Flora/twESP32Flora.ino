@@ -168,7 +168,7 @@ bool publishToMQTT(String mqtt, int port, String sensor) {
       Serial.println("Connected.");
       Serial.printf("Publishing message: %s\n", outputtext);
       // Publish the message.
-      if (mqtt_client.publish(MQTT_TOPIC, outputtext)) {
+      if (mqtt_client.publish((MQTT_TOPIC + String(WiFi.macAddress())).c_str(), outputtext)) {
         Serial.println("Publish ok");
         // Allow the client to process messages.
         mqtt_client.loop();
