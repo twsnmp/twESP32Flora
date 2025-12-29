@@ -22,7 +22,7 @@
 
 // Const
 #define uS_TO_S_FACTOR 1000000ULL /* Conversion factor for micro seconds to seconds */
-#define MQTT_TOPIC "twESP32Flora/data"
+#define MQTT_TOPIC "twESP32Flora/data/"
 
 // Config
 Preferences pref;
@@ -160,6 +160,7 @@ bool publishToMQTT(String mqtt, int port, String sensor) {
   serializeJson(doc, outputtext, sizeof(outputtext));
   mqtt_client.setServer(mqtt.c_str(), port);
   mqtt_client.setKeepAlive(60);
+  mqtt_client.setBufferSize(512);
   int i = 12;
   while (!mqtt_client.connected()) {
     String client_id = "twESP32Flora-" + String(WiFi.macAddress());
@@ -212,6 +213,7 @@ void setDHT22Data() {
   } else {
     Serial.println(F("Error reading humidity!"));
   }
+  doc["sensor_type"] = "DHT22";
 }
 
 void setBME280Data() {
@@ -230,6 +232,7 @@ void setBME280Data() {
   doc["temperature"] = bme.readTemperature();
   doc["pressure"] = (bme.readPressure() / 100.0F);
   doc["humidity"] = bme.readHumidity();
+  doc["sensor_type"] = "BME280";
 }
 
 
@@ -238,6 +241,8 @@ void setSoilMoistureData() {
     return;
   }
   doc["soil_moisture"] = getAnalog(SOIL_MOISTURE_SENSOR, dry_soil, wet_soil);
+  doc["dry_soil"] = dry_soil;
+  doc["wet_soil"] = wet_soil;
 }
 
 void setRainSensorData() {
@@ -246,6 +251,8 @@ void setRainSensorData() {
   }
   doc["rain_intensity"] = getAnalog(RAIN_SENSOR_ANALOG, dry_rain, wet_rain);
   doc["rain"] = digitalRead(RAIN_SENSOR_DIGITAL) == LOW ? true : false;
+  doc["dry_rain"] = dry_rain;
+  doc["wet_rain"] = wet_rain;
 }
 
 

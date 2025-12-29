@@ -136,13 +136,13 @@ func configESP32() error {
 
 	// Reset ESP32 to trigger config mode
 	p.SetDTR(false)
-	time.Sleep(time.Millisecond * 100)
-	p.SetDTR(true)
 	time.Sleep(time.Millisecond * 500)
+	p.SetDTR(true)
+	time.Sleep(time.Millisecond * 1000)
 
 	// Set a longer read timeout to wait for user input on CLI
 	p.SetReadTimeout(time.Second * 60)
-
+	gotStart := false
 	for {
 		line, err := readLine(p)
 		if err != nil {
@@ -154,6 +154,13 @@ func configESP32() error {
 			return err
 		}
 		fmt.Println(line)
+		if !gotStart {
+			// sync
+			if strings.HasPrefix(line, "setup start") {
+				gotStart = true
+			}
+			continue
+		}
 		time.Sleep(time.Millisecond * 100)
 		switch {
 		case strings.HasPrefix(line, "enter ssid:"):
