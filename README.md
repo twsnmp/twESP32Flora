@@ -1,8 +1,12 @@
 # twESP32Flora
+
+[日本語の説明](./README_ja.md)
+
 ESP32-based plant monitoring system sending temperature, humidity, soil moisture, and pressure data via MQTT for TWSNMP.
 
 
-![](images/2025-12-28_06-59-34.png)
+![](images/2025-12-29_16-42-05.png)
+
 
 
 ## CLI Tool
@@ -93,7 +97,7 @@ The firmware is configured for the following pin assignments (based on XIAO ESP3
 | **LED** | `D10` | Status Indicator |
 | **BME280** | `SDA`, `SCL` | I2C Interface (Address 0x77 or 0x76) |
 
-![](images/2025-12-28_07-08-58.png)
+![](images/2025-12-29_16-43-27.png)
 
 ### Button Operations
 
@@ -144,4 +148,12 @@ To clean up the build artifacts, run:
 
 ```bash
 task clean
+```
+
+## Copyright
+
+see [LiCENSE](./LICENSE)
+
+```
+Copyright 2025 Masayuki Yamai
 ```

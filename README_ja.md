@@ -2,7 +2,7 @@
 TWSNMP向けに、温度、湿度、土壌水分、気圧データをMQTT経由で送信するESP32ベースの植物モニターシステムです。
 
 
-![](images/2025-12-28_06-53-21.png)
+![](images/2025-12-29_16-41-08.png)
 
 ## CLIツール
 
@@ -93,7 +93,8 @@ WiFiとMQTTの設定を行うには：
 | **BME280** | `SDA`, `SCL` | I2Cインターフェース (アドレス 0x77 または 0x76) |
 
 
-![](images/2025-12-28_07-06-51.png)
+![](images/2025-12-29_16-42-37.png)
+
 
 ### ボタン操作
 
@@ -144,4 +145,12 @@ WiFiとMQTTの設定を行うには：
 
 ```bash
 task clean
+```
+
+## Copyright
+
+see [LiCENSE](./LICENSE)
+
+```
+Copyright 2025 Masayuki Yamai
 ```
